@@ -1,6 +1,6 @@
 # comparandoAndo
 
-Prototipo de un comparador de precios para telefonos celulares
+Prototipo de un comparador de precios para telefonos celulares y web scraping para actualizar los precios
 
 ## Requerimientos
 
