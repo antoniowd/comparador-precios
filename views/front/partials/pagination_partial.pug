@@ -1,0 +1,12 @@
+input(type="hidden" id="page" name="page" value=query.page)
+if(query.total_pages > 0)
+    nav.mt-3(aria-label="Paginacion")
+        ul.pagination.justify-content-center
+            li.page-item(class=(query.prev_page == -1 ? 'disabled' : ''))
+                button.page-link(id="prev_page" data-page=query.prev_page disabled=(query.prev_page == -1)) Anterior
+
+            li.page-item.disabled.font-weight-bold
+                a.page-link.pl-3.pr-3(href="#" tabindex="-1")= 'Mostrando página ' + (query.page + 1) + ' de ' + query.total_pages
+
+            li.page-item(class=(query.next_page == -1 ? 'disabled' : ''))
+                button.page-link(id="next_page" data-page=query.next_page disabled = (query.next_page == -1)) Siguiente

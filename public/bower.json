@@ -1,0 +1,27 @@
+{
+  "name": "comparando_ando",
+  "authors": [
+    "Antonio Martin <tonitim13@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Font-Awesome": "^5.2.0",
+    "font-awesome": "font-awsome#4.3",
+    "Ionicons": "ionicons#2.0",
+    "jquery-ui": "^1.12.1",
+    "selectize": "^0.12.6",
+    "date-and-time": "^0.6.2",
+    "datatables": "^1.10.19",
+    "neo-async": "^2.5.2"
+  }
+}

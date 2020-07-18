@@ -1,0 +1,57 @@
+doctype html
+html(lang="es")
+    head
+        script(async src="https://www.googletagmanager.com/gtag/js?id=UA-125319276-1")
+        script
+            include ../gtag.js
+
+        title= title
+
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+        link(href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet')
+
+        style(type="text/css")
+            include ../loader.min.css
+
+    body
+        #preloader
+            .loder-box
+                .battery
+
+        input(type='hidden' id='site_url' value=siteUrl())
+        nav.navbar.justify-content-center.p-0
+            a.navbar-brand.text-primary
+                h3.h4.p-0.m-0.font-weight-bold.text-logo
+                    span Comparando
+                    span.text-warning(style='font-size: 1.8rem;') A
+                    span ndo
+        header.text-center.es-gradient.py-4.mb-3
+            h2.h2.text-white ¡Gracias por su visita!
+            h6.h6.text-muted Lo estamos redireccionando al sitio
+            img(src=siteUrl('images/loading/main3.gif') style="width: 30px;")
+
+        .container.text-center.pt-3
+
+            img(src=siteUrl(oferta.sitio.logo))
+
+
+
+            h4.h4.my-4= oferta.descripcion
+            input(type="hidden" id="oferta_url" value=affiate_url)
+            h3.h3.text-warning(style="font-weight: bolder;")= PAIS_DEFECTO.moneda_simbolo + ' ' + oferta.precio.toFixed(2)
+            if(PAIS_DEFECTO.moneda_codigo != oferta.currency_original)
+                sub.ml-2.text-muted(style="font-size: 0.7rem; font-weight: normal;")
+                    abbr(title="Precio Original")= oferta.sitio.pais.moneda_simbolo + ' ' + oferta.precio_original
+
+            h5.h5.text-muted Le deseamos una buena compra
+
+
+
+
+
+
+
+
+        script(src=siteUrl('javascripts/oferta_index.bundle.js'))

@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    p.text-center.danger-text= error.message
+
+block content_js
+    script(src=siteUrl('javascripts/producto_index.bundle.js'))

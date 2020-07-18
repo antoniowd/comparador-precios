@@ -1,0 +1,121 @@
+extend ../layout
+
+block active_menu
+    - var menu = {category: 'sitio', option: 'sitio_administrar'}
+
+block content_header
+    h1 #{title}
+    ol.breadcrumb
+        li
+            a(href=siteUrl('admin/sitios')) Sitios
+        li
+            a(href=siteUrl('admin/sitios')) Administrar
+        li.active #{title}
+
+block content
+    .row
+        .col-md-offset-3.col-md-6.col-sm-offset-2.col-sm-8
+            .box.box-success
+                form.form(action=(siteUrl('admin/sitios/guardar/') + (sitio && sitio._id != undefined ? sitio._id : '')),
+                | method="POST" enctype="multipart/form-data")
+                    .box-body
+                        .form-group
+                            label(for="codigo") Codigo interno del sitio *
+                            input.form-control(id="codigo" name="codigo" value=(sitio ? sitio.codigo : '') required
+                            | placeholder="Codigo interno para el sistema" style="text-transform: uppercase;")
+                            label.label-danger No tocar ni cambiar este codigo
+
+                        .form-group
+                            label(for="nombre") Nombre del Sitio *
+                            input.form-control(id="nombre" name="nombre" value=(sitio ? sitio.nombre : '') required
+                            | placeholder="Escriba el nombre del sitio para mostrar a los usuarios")
+
+                        .form-group
+                            label(for="url") Url *
+                            input.form-control(type="url" id="url" name="url" required
+                            | value=(sitio ? sitio.url : '') placeholder="Agregue la url base del sitio")
+
+                        .form-group
+                            label(for="afiliado_id") Id de afiliado *
+                            input.form-control(type="text" id="afiliado_id" name="afiliado_id" required
+                            | value=(sitio ? sitio.afiliado_id : '') placeholder="nombre de parametro del afiliado")
+
+                        .form-group
+                            label(for="afiliado_tag") Tag de afiliado *
+                            input.form-control(type="text" id="afiliado_tag" name="afiliado_tag" required
+                            | value=(sitio ? sitio.afiliado_tag : '') placeholder="nombre de parametro del afiliado")
+
+                        .form-group
+                            .row
+                                .col-md-6
+                                    label(for="logo") Logo *
+                                    input.form-control(type="file" id="logo" name="logo" required=(sitio ? false : true))
+                                .col-md-6.text-right
+                                    if(sitio)
+                                        img(src=siteUrl(sitio.logo) style="height: 70px; width: 100%;")
+
+                        .form-group
+                            label(for="pais") Pais *
+                            select.form-control(id="pais" name="pais" required)
+                                option
+                                each pais in paises
+                                    option(value=pais.codigo,
+                                    selected=(sitio && sitio.pais.codigo == pais.codigo ? true : false))= pais.nombre
+
+                        .form-group
+                            label(for="rating") Valoracion *
+                            input.form-control(id="rating" name="rating" value=(sitio ? sitio.rating : '20') required
+                            | placeholder="Valoracion del sitio")
+
+                        .form-group
+                            label(for="email_cliente") Email contacto
+                            input.form-control(type="email" id="email_cliente" name="email_cliente",
+                            value=(sitio ? sitio.email_cliente : ''),
+                            placeholder="Email de contacto para los usuarios")
+
+                        .form-group
+                            label(for="url_contacto") Url Contacto
+                            input.form-control(type="url" id="url_contacto" name="url_contacto",
+                            value=(sitio ? sitio.url_contacto : ''),
+                            placeholder="Url de la pagina de contacto")
+
+                        .form-group
+                            label(for="url_condiciones") Url Condiciones
+                            input.form-control(type="url" id="url_condiciones" name="url_condiciones",
+                            value=(sitio ? sitio.url_condiciones : ''),
+                            placeholder="Url de la pagina de condiciones")
+
+                        .form-group
+                            label(for="metodos_pago") Metodos de Pago
+                            select.form-control(id="metodos_pago" name="metodos_pago" multiple)
+                                each metodo in metodos_pago
+                                    option(value=metodo._id)= metodo.metodo
+
+                        .form-group
+                            label(for="agencias") Agencias de Envio
+                            select.form-control(id="agencias" name="agencias" multiple)
+                                each agencia in agencias_envio
+                                    option(value=agencia._id)= agencia.nombre
+
+                        .form-group
+                            label(for="status") Estado *
+                            select.form-control(id="status" name="status")
+                                option(value="1" selected=(sitio && sitio.status == 1 ? true : false)) Activo
+                                option(value="0" selected=(sitio && sitio.status == 0 ? true : false)) Inactivo
+
+                        h4 Propiedades
+
+
+                        hr
+                        .form-group.row
+                            .col-xs-6.text-center
+                                input.btn.btn-success(type="submit" value="Guardar")
+                            .col-xs-6.text-center
+                                a.btn.btn-danger(href=siteUrl('admin/sitios')) Cancelar
+
+block content_css
+
+
+block content_js
+    script
+        include form.js

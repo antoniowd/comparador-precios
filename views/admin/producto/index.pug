@@ -1,0 +1,82 @@
+extend ../layout
+
+block active_menu
+    - var menu = {category: 'producto', option: 'producto_productos'}
+
+block content_header
+    h1 Administrar Productos
+    ol.breadcrumb
+        li Productos
+        li.active Administrar
+
+block content
+    form(id="form" action=(siteUrl('admin/productos')) method="GET")
+        .row
+            .col-md-3
+                label Marca
+                select.form-control(id="marca" name="marca")
+                    option(value="") Todas las Marcas
+                    each marca in marcas
+                        option(value=marca selected=(marca == query.marca))= marca
+            .col-md-2
+                label Ofertas
+                select.form-control(id="oferta" name="oferta")
+                    option(value="-1" selected=('-1' == query.oferta)) Todas
+                    option(value="1" selected=('1' == query.oferta)) Con ofertas
+                    option(value="0" selected=('0' == query.oferta)) Sin Ofertas
+
+            .col-md-7.text-right(style="padding-top: 25px;")
+                button.btn.btn-primary(style="margin-right: 15px;")
+                    i.fa.fa-search
+
+                a.btn.btn-success(href=siteUrl('admin/productos/nuevo'))
+                    i.fa.fa-plus  Registrar Producto
+    br
+    .box.box-primary
+        .box-body
+            table.display.responsive.nowrap(style="width:100%")
+                thead
+                    tr
+                        th Marca
+                        th Descripcion
+                        th Ofertas
+                        th Rating
+                        th Estado
+                        th(style="width: 20px;") Acciones
+                tbody
+                    each producto in productos
+                        tr
+                            td= producto.marca
+                            td= producto.descripcion
+                            td= producto.ofertas.length
+                            td= producto.rating + '%'
+                            td
+                                if(producto.status == 1)
+                                    label.label.label-success Activo
+                                else
+                                    label.label.label-warning Inactivo
+                            td.action-table
+                                button.btn.btn-primary.btn-sm.btn-action-table(onclick="detalles('" + producto._id + "')" type="button")
+                                    span.fa.fa-chain
+                                a.btn.btn-default.btn-sm.btn-action-table(href=siteUrl('admin/productos/editar/' + producto._id))
+                                    span.glyphicon.glyphicon-edit
+                                a.btn.btn-danger.btn-sm.btn-action-table.confirm-action(href=siteUrl('admin/productos/eliminar/' + producto._id))
+                                    span.glyphicon.glyphicon-trash
+
+    .modal.fade(id="detalles_modal" tabindex='1' role='dialog')
+
+
+block content_css
+    link(href=siteUrl("bower_components/datatables/media/css/jquery.dataTables.min.css") rel='stylesheet' type='text/css')
+    link(href=siteUrl("bower_components/datatables/media/css/dataTables.bootstrap.min.css") rel='stylesheet' type='text/css')
+    link(href=siteUrl("responsive_datatable/responsive.dataTables.min.css") rel='stylesheet' type='text/css')
+    style
+        div.container { max-width: 1200px }
+
+block content_js
+    script(src=siteUrl("bower_components/datatables/media/js/jquery.dataTables.min.js") type='text/javascript')
+    script(src=siteUrl("bower_components/datatables/media/js/dataTables.bootstrap.min.js") type='text/javascript')
+    script(src=siteUrl("responsive_datatable/dataTables.responsive.min.js") type='text/javascript')
+    script
+        include index.js
+    script#detalle_js

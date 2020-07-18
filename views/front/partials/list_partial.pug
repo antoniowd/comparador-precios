@@ -1,0 +1,78 @@
+
+
+each producto in productos
+    .product-mosaic.col-12.col-sm-6.col-md-4.col-lg-3.col-xl-3(style=(query.list == 'mosaic' ? 'display: block;' : 'display: none;'))
+        .card.h-100.p-2
+            a.text-center.mt-3(href=siteUrl('p/' + producto.slug))
+                img.mr-auto.ml-auto.img-fluid.pb-3(src=siteUrl(producto.imagen),
+                style="width: 120px;" alt=producto.keywords)
+            .card-body.p-0.text-center
+                h6.h6.card-title.font-weight-bold.text-uppercase(style="font-size: 0.9rem;")
+                    a(href=siteUrl('p/' + producto.slug))= producto.descripcion
+
+                .card-text.rating-o.text-muted
+                    each star in [20, 40, 60, 80, 100]
+                        if(producto.rating >= star)
+                            i.fa.fa-star
+                        else if(producto.rating >= (star - 10))
+                            i.fa.fa-star-half-alt
+                        else
+                            i.far.fa-star
+
+
+                .card-text.text-warning(style="font-size: 1rem;")
+                    if(producto.precios.length == 1)
+                        span= PAIS_DEFECTO.moneda_simbolo + ' ' + producto.precios[0].toFixed(2)
+                    else
+                        span= PAIS_DEFECTO.moneda_simbolo + ' ' + producto.precios[0].toFixed(2) + ' - ' + producto.precios[producto.precios.length - 1].toFixed(2)
+
+
+
+                .card-text.text-left.text-muted.mt-2
+                    if(producto.precios.length == 1)
+                        small= producto.precios.length + ' Oferta encontrada'
+                    else
+                        small= producto.precios.length + ' Ofertas encontradas'
+
+
+    .product-list.col-12(style=(query.list == 'list' ? 'display: block;' : 'display: none;'))
+        .card.h-100.p-3
+            .row
+                .col-4.text-center
+                    a.text-center(href=siteUrl('p/' + producto.slug))
+                        img.img-fluid(src=siteUrl(producto.imagen),
+                        style="width: 120px;" alt=producto.keywords)
+                .col-8
+                    .ml-3.p-0
+                        h6.h6.card-title.font-weight-bold.text-uppercase(style="font-size: 0.9rem;")
+                            a(href=siteUrl('p/' + producto.slug))= producto.descripcion
+
+                        .card-text.d-none.d-sm-block(style='font-size: 0.8rem;')
+                            span= producto.propiedades.map(function (elem) {return elem.valor}).join(', ')
+
+
+                        .card-text.rating-o.text-muted
+                            each star in [20, 40, 60, 80, 100]
+                                if(producto.rating >= star)
+                                    i.fa.fa-star
+                                else if(producto.rating >= (star - 10))
+                                    i.fa.fa-star-half-alt
+                                else
+                                    i.far.fa-star
+
+                        .card-text.text-warning(style="font-size: 1rem;")
+                            if(producto.precios.length == 1)
+                                span= PAIS_DEFECTO.moneda_simbolo + ' ' + producto.precios[0].toFixed(2)
+                            else
+                                span= PAIS_DEFECTO.moneda_simbolo + ' ' + producto.precios[0].toFixed(2) + ' - ' + producto.precios[producto.precios.length - 1].toFixed(2)
+
+                        .card-text.text-left.text-muted.mt-2
+                            if(producto.precios.length == 1)
+                                small= producto.precios.length + ' Oferta encontrada'
+                            else
+                                small= producto.precios.length + ' Ofertas encontradas'
+
+            .d-block.d-sm-none.mt-2(style='font-size: 0.8rem;')
+                span= producto.propiedades.map(function (elem) {return elem.valor}).join(', ')
+
+

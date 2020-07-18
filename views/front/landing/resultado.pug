@@ -1,0 +1,97 @@
+extends ../layout
+
+block content
+    .container-fluid
+        nav(aria-label="Mapa del sitio")
+            ol.breadcrumb.bg-white
+                li.breadcrumb-item
+                    a(href=siteUrl())
+                        i.fa.fa-home
+                li.breadcrumb-item(aria-current="Buscar") Buscar
+                li.breadcrumb-item.active(aria-current=query.q)= query.q
+
+        .row
+            .col-md-3.pl-5
+                h4= 'Resultados de ' + query.q + ' (' + query.total_productos + ')'
+            .col-md-9
+                h5.float-left(id="filter-badge")
+                    each marca in query.marca
+                        a.mr-2.my-1.badge.badge-secondary.badge-pill.del-filter-marca(href="#" data-marca=marca)
+                            span= marca + ' '
+                            span &times;
+                    each precio in query.precio
+                        a.mr-2.my-1.badge.badge-secondary.badge-pill.del-filter-precio(href="#" data-precio=precio)
+                            - var p = precio.split('-')
+                            if(p[0] == 0)
+                                span= 'menor que ' + PAIS_DEFECTO.moneda_simbolo + ' ' + p[1] + ' '
+                            else if(p[1] == 0)
+                                span= 'mayor que ' + PAIS_DEFECTO.moneda_simbolo + ' ' + p[0] + ' '
+                            else
+                                span= 'de ' + PAIS_DEFECTO.moneda_simbolo + ' ' + p[0] + ' a ' + PAIS_DEFECTO.moneda_simbolo + ' ' + p[1] + ' '
+
+                            span &times;
+
+                a.float-right(href="#" id="del-filtro" ,
+                style=(query.precio.length > 0 || query.marca.length > 0 ? 'display: block;' : 'display: none;')) Eliminar filtros
+
+
+        .row
+            .col-md-3.d-none.d-sm-none.d-md-block
+                include ../partials/filtro_partial
+
+
+            .col-md-9.col-sm-12.col-12
+                form(id="filtro_query" method="GET" action=siteUrl('resultado'))
+                    input(type="hidden" id="q" name="q" value=query.q)
+                    each marca in query.marca
+                        input(type="hidden" id=('m_' + marca) name="marca" value=(marca))
+
+                    each precio in query.precio
+                        input(type="hidden" id=('p_' + precio) name="precio" value=(precio))
+
+                    .row.bg-light.align-items-center.p-2.mb-2
+                        .col-12.col-sm-12.col-md-8
+                            .btn-group.btn-group-toggle(data-toggle="buttons")
+                                label.btn.btn-info.text-light.mr-2(class=(query.list == 'mosaic' ? 'active' : ''))
+                                    input(type="radio" name='list' value='mosaic' ,
+                                    autocomplete='off' checked=(query.list == 'mosaic'))
+                                    i.fa.fa-th
+                                label.btn.btn-info.text-light.mr-2(class=(query.list == 'list' ? 'active' : ''))
+                                    input(type="radio" name='list' value='list',
+                                    autocomplete='off' checked=(query.list == 'list'))
+                                    i.fa.fa-list
+                            .d-block.d-sm-block.d-md-none.float-right
+                                button.btn.btn-info.text-dark.mb-3(type="button" id="filter-btn")
+                                    i.fa.fa-filter
+
+                        .col-12.col-sm-12.col-md-4
+                            .form-group.mb-0
+                                select.custom-select(id="order" name="order")
+                                    option(value="1" selected=(query.order == '1')) Popularidad
+                                    option(value="2" selected=(query.order == '2')) Precio Ascendente
+                                    option(value="3" selected=(query.order == '3')) Precio Descendente
+
+                    .row.gutters-5(id="producto_list")
+                        if(productos.length > 0)
+                            include ../partials/list_partial
+                        else
+                            .col-12
+                                h4.alert.alert-warning.text-center(role="alert") No se ha encontrado ningun producto con estos filtros
+
+
+                    include ../partials/pagination_partial
+
+    .modal(id="filter-modal" tabindex="-1" role="dialog")
+        .modal-dialog(role="document")
+            .modal-content
+                .modal-header
+                    .h5.modal-title Filtros
+                    button.close(type="button" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                .modal-body
+                    include ../partials/filtro_partial
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Cancelar
+
+block content_js
+    script(src=siteUrl('javascripts/landing_resultado.bundle.js'))

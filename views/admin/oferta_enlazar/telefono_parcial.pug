@@ -1,0 +1,29 @@
+hr
+.row
+    .col-xs-2
+        img.img-responsive(src=siteUrl(telefono.imagen))
+    .col-xs-10
+        h3= telefono.marca
+            br
+            small= telefono.modelo
+.row
+    .col-xs-12
+        table.table.table-condensed
+            tr
+                th Descripción
+                th Precio
+                th(style="width: 20px;" data-priority="2") Acciones
+            each oferta in telefono.ofertas
+                tr
+                    td
+                        a(href=oferta.url target="_BLANK")= oferta.descripcion
+                        br
+                        strong= oferta.sitio.nombre
+                    td= parseFloat(oferta.precio).toFixed(2) + ' ' + oferta.currency
+                    td.action-table
+                        a.btn.btn-primary.btn-sm.btn-action-table(href=siteUrl('ofertas/editar/' + oferta._id))
+                            span.fa.fa-chain
+
+                        button.btn.btn-default.btn-sm.btn-action-table(onclick="detalles('" + oferta._id + "')",
+                        | type="button")
+                            span.glyphicon.glyphicon-list

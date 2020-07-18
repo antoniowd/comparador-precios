@@ -1,0 +1,38 @@
+extend ../layout
+
+block active_menu
+    - var menu = {category: 'scraper', option: 'scraper'}
+
+block content_header
+    h1 Actualizar precios con crawlers
+    ol.breadcrumb
+        li
+            a(href=siteUrl('admin/scraper')) Scraper
+        li.active Actualizar
+
+block content
+    .box.box-primary
+        .box-body
+            .row
+                .col-md-3
+                    label Sitio
+                    select.form-control(id="sitio" name="sitio")
+                        each sitio in sitios
+                            option(value=sitio._id)= sitio.nombre
+
+                .col-md-9.text-right(style="padding-top: 25px;")
+                    button.btn.btn-primary(id="actualizar-btn" type="button")
+                        i.fa.fa-refresh
+
+            hr
+            .row
+                .col-md-12
+                    div.form-control(id="text-result" style="height: 350px; overflow-y: scroll;" readonly)
+
+block content_css
+
+
+block content_js
+    script(src=siteUrl("bower_components/neo-async/dist/async.min.js") type='text/javascript')
+    script
+        include index.js

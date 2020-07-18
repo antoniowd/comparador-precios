@@ -1,0 +1,99 @@
+extend ../layout
+
+block active_menu
+    - var menu = {category: 'oferta', option: 'oferta_ofertas'}
+
+block content_header
+    h1 Administrar Ofertas
+    ol.breadcrumb
+        li
+            a(href=siteUrl('admin/ofertas')) Ofertas
+        li.active Administrar
+
+block content
+    form(id="form" action=(siteUrl('admin/ofertas')) method="GET")
+        .row
+            .col-md-3
+                label Sitio
+                select.form-control(id="sitio" name="sitio")
+                    option(value="")
+                    each sitio in sitios
+                        option(value=sitio._id selected=(sitio._id.equals(query.sitio)))= sitio.nombre
+            .col-md-2
+                label Indexado
+                select.form-control(id="indexado" name="indexado")
+                    option(value="-1" selected=('-1' == query.indexado)) Todos
+                    option(value="1" selected=('1' == query.indexado)) Indexado
+                    option(value="0" selected=('0' == query.indexado)) No Indexado
+
+            .col-md-7.text-right(style="padding-top: 25px;")
+                button.btn.btn-primary(style="margin-right: 15px;")
+                    i.fa.fa-search
+
+                a.btn.btn-success(href=siteUrl('admin/ofertas/nuevo' + (query.sitio != '' ? '?sitio=' + query.sitio : '')) id="registrar_oferta")
+                    i.fa.fa-plus  Registrar Oferta
+    br
+    .box.box-primary
+        .box-body
+            table.display.responsive.nowrap(style="width:100%")
+                thead
+                    tr
+                        th Descripción
+                        th Sitio
+                        th Precio
+                        th Actualizado
+                        th Indexado
+                        th Estado
+                        th(style="width: 20px;") Acciones
+                tbody
+                    each oferta in ofertas
+                        tr
+                            td(style="white-space: normal !important;")
+                                a(href=oferta.url target="_BLANK")= oferta.descripcion
+                            td
+                                if(oferta.sitio.status == 1)
+                                    label.label.label-success= oferta.sitio.nombre
+                                else if(oferta.sitio.status == 0)
+                                    label.label.label-warning= oferta.sitio.nombre
+                                else
+                                    label.label.label-danger= oferta.sitio.nombre
+                            td= PAIS_DEFECTO.moneda_simbolo + ' ' + parseFloat(oferta.precio).toFixed(2)
+                            td= date.format(oferta.updated, 'DD/MM/YYYY HH:mm:ss')
+                            td
+                                if(oferta.indexado == 1)
+                                    label.label.label-success SI
+                                else
+                                    label.label.label-warning NO
+                            td
+                                if(oferta.status == 1)
+                                    label.label.label-success Activo
+                                else
+                                    label.label.label-warning Inactivo
+                            td.action-table
+                                button.btn.btn-default.btn-sm.btn-action-table(onclick="detalles('" + oferta._id + "')",
+                                type="button")
+                                    span.glyphicon.glyphicon-list
+                                a.btn.btn-default.btn-sm.btn-action-table(href=siteUrl('admin/ofertas/editar/' + oferta._id))
+                                    span.glyphicon.glyphicon-edit
+                                a.btn.btn-danger.btn-sm.btn-action-table.confirm-action(href=siteUrl('admin/ofertas/eliminar/' + oferta._id))
+                                    span.glyphicon.glyphicon-trash
+
+            if(ofertas.length == 0 && query.sitio == '')
+                h3.text-warning.text-center Debe seleccionar un sitio
+
+
+    .modal.fade(id="detalles_modal" tabindex='1' role='dialog')
+
+block content_css
+    link(href=siteUrl("bower_components/datatables/media/css/jquery.dataTables.min.css") rel='stylesheet' type='text/css')
+    link(href=siteUrl("bower_components/datatables/media/css/dataTables.bootstrap.min.css") rel='stylesheet' type='text/css')
+    link(href=siteUrl("responsive_datatable/responsive.dataTables.min.css") rel='stylesheet' type='text/css')
+    style
+        div.container { max-width: 1200px }
+
+block content_js
+    script(src=siteUrl("bower_components/datatables/media/js/jquery.dataTables.min.js") type='text/javascript')
+    script(src=siteUrl("bower_components/datatables/media/js/dataTables.bootstrap.min.js") type='text/javascript')
+    script(src=siteUrl("responsive_datatable/dataTables.responsive.min.js") type='text/javascript')
+    script
+        include index.js

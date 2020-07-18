@@ -1,0 +1,14 @@
+div(style="height: 200px; overflow-y: auto;")
+    table.table.table-condensed
+        tr
+            th
+            th Marca
+            th Modelo
+        each producto in productos
+            tr
+                td
+                    input(type="checkbox" checked name="productos_id" value=producto._id)
+                td= producto.marca
+                td= producto.modelo
+br
+strong= productos.length + ' productos encontrados'

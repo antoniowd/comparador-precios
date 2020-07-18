@@ -1,0 +1,15 @@
+div(style="height: 200px; overflow-y: auto;")
+    table.table.table-condensed
+        tr
+            th Marca
+            th Modelo
+            th(style="width: 20px;" data-priority="2") Acciones
+        each producto in productos
+            tr
+                td= producto.marca
+                td= producto.modelo
+                td.action-table
+                    button.btn.btn-primary.btn-xs.btn-action-table(type="button" onclick="crearTelefono('" + producto._id + "')")
+                        span.fa.fa-plus
+br
+strong= productos.length + ' telefonos encontrados'

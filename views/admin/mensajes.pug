@@ -1,0 +1,17 @@
+extend ./layout
+
+block content
+    table.table.table-condensed.table-striped
+        tr
+            th No
+            th Nombre
+            th Correo
+            th Mensaje
+            th Fecha
+        each mensaje, index in mensajes
+            tr
+                td= index + 1
+                td= mensaje.nombre
+                td= mensaje.correo
+                td= mensaje.contenido
+                td= date.format(mensaje.created, 'DD/MM/YYYY HH:mm:ss')

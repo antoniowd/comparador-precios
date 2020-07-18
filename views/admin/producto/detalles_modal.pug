@@ -1,0 +1,42 @@
+.modal-dialog.modal-lg(role="document")
+    .modal-content
+        .modal-header
+            button.close(type="button" data-dismiss="modal" aria-label="Close")
+                span(aria-hidden="true") &times;
+            h3.modal-title Detalles del producto
+        .modal-body
+            .row
+                .col-md-12
+                    h4= producto.descripcion
+                    input#p_id(type="hidden" value=producto._id)
+                    table.table.table-condensed.text-left
+                        tr
+                            th Oferta
+                            td Actualizado
+                            td= 'Prec. ' + PAIS_DEFECTO.moneda_simbolo
+                            td Precio
+                            td Acciones
+                        each oferta in producto.ofertas
+                            tr
+                                td
+                                    span= oferta.sitio.nombre + ' - '
+                                    a(href=oferta.url target="_BLANK")= oferta.descripcion
+                                td(id=('oferta_up_' + oferta._id))= date.format(oferta.updated, 'DD/MM/YYYY HH:mm:ss')
+                                td.text-success
+                                    span(id=('oferta_precio_' + oferta._id))= oferta.precio.toFixed(2)
+                                td
+                                    .input-group
+                                        span.input-group-addon= oferta.currency_original
+                                        input.form-control.oferta-precio(type="number" id=('oferta_' + oferta._id),
+                                        value=oferta.precio_original style="min-width: 120px;"
+                                        min="0" step="0.01" data-id=oferta._id data-currency=oferta.currency_original)
+                                td
+                                    a.btn.btn-danger.btn-sm.btn-action-table(href="#" onclick="unlink('" + oferta._id + "')")
+                                        span.fa.fa-unlink
+
+
+        .modal-footer.text-right
+            button.btn.btn-default(type="button" data-dismiss="modal") Cerrar
+
+script
+    include detalles_modal.js

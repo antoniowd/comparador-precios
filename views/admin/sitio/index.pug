@@ -1,0 +1,63 @@
+extend ../layout
+
+block active_menu
+    - var menu = {category: 'sitio', option: 'sitio_administrar'}
+
+block content_header
+    h1 Administrar de los Sitios
+    ol.breadcrumb
+        li
+            a(href=siteUrl('admin/sitios')) Sitios
+        li.active Administrar
+
+block content
+    .row
+        .col-md-12.text-right
+            a.btn.btn-success(href=siteUrl('admin/sitios/nuevo'))
+                i.fa.fa-plus  Registrar Sitio
+    br
+    .box.box-primary
+        .box-body
+            table.display.responsive.nowrap(style="width:100%")
+                thead
+                    tr
+                        th Nombre
+                        th Logo
+                        th Pais
+                        th Rating
+                        th Estado
+                        th(style="width: 20px;") Acciones
+                tbody
+                    each sitio in sitios
+                        tr
+                            td
+                                a(href=sitio.url target="_BLANK")= sitio.nombre
+                            td
+                                img(src=siteUrl(sitio.logo) style="height: 30px;")
+                            td= sitio.pais.nombre + ' | ' + sitio.pais.moneda_codigo
+                            td= sitio.rating + '%'
+                            td
+                                if(sitio.status == 1)
+                                    label.label.label-success Activo
+                                else
+                                    label.label.label-warning Inactivo
+                            td.action-table
+                                a.btn.btn-default.btn-sm.btn-action-table(href=siteUrl('admin/sitios/editar/' + sitio._id))
+                                    span.glyphicon.glyphicon-edit
+                                a.btn.btn-danger.btn-sm.btn-action-table.confirm-action(href=siteUrl('admin/sitios/eliminar/' + sitio._id))
+                                    span.glyphicon.glyphicon-trash
+
+
+block content_css
+    link(href=siteUrl("bower_components/datatables/media/css/jquery.dataTables.min.css") rel='stylesheet' type='text/css')
+    link(href=siteUrl("bower_components/datatables/media/css/dataTables.bootstrap.min.css") rel='stylesheet' type='text/css')
+    link(href=siteUrl("responsive_datatable/responsive.dataTables.min.css") rel='stylesheet' type='text/css')
+    style
+        div.container { max-width: 1200px }
+
+block content_js
+    script(src=siteUrl("bower_components/datatables/media/js/jquery.dataTables.min.js") type='text/javascript')
+    script(src=siteUrl("bower_components/datatables/media/js/dataTables.bootstrap.min.js") type='text/javascript')
+    script(src=siteUrl("responsive_datatable/dataTables.responsive.min.js") type='text/javascript')
+    script
+        include index.js

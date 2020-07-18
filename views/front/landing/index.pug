@@ -1,0 +1,73 @@
+extends ../layout
+
+block content
+    .header-landing.text-center
+        img.img-fluid(src=siteUrl('images/landing/home1.jpg') alt="buscar precio de celulares" style="height: auto; max-width: 100%;")
+
+    .container-fluid.mt-4
+        .row
+            .col-12.col-sm-6
+                h2.h2(style="font-size: 1.4rem;") Precios de telefonos celulares mas populares
+            .col-12.col-sm-6.text-right
+                a.btn.btn-info(href=siteUrl('c/' + categorias.celular.slug))
+                    i.fa.fa-plus
+                    span  Telefonos celulares
+        hr
+        .row.no-gutters
+            each producto in productos
+                a.product-landing.col-6.col-sm-4.col-md-3.col-lg-2.text-center.mb-5(href=siteUrl('p/' + producto.slug))
+
+                    img.img-fluid(src=siteUrl(producto.imagen)
+                    style="width: 100px;" alt=producto.propiedades.map(function (elem) {return elem.valor}).join(', '))
+
+                    h6.h6.mt-3.font-weight-bold.text-uppercase(style="font-size: 0.8rem;")= producto.descripcion
+
+                    .rating-o.mt-1.text-muted
+                        each star in [20, 40, 60, 80, 100]
+                            if(producto.rating >= star)
+                                i.fa.fa-star
+                            else if(producto.rating >= (star - 10))
+                                i.fa.fa-star-half-alt
+                            else
+                                i.far.fa-star
+
+                    .text-warning.mt-1(style="font-size: 1rem;")
+                        if(producto.precios.length == 1)
+                            span= PAIS_DEFECTO.moneda_simbolo + ' ' + producto.precios[0].toFixed(2)
+                        else
+                            span= PAIS_DEFECTO.moneda_simbolo + ' ' + producto.precios[0].toFixed(2) + ' - ' + producto.precios[producto.precios.length - 1].toFixed(2)
+
+
+
+
+        h2.h2(style="font-size: 1.4rem;") ¿Por qué usar un comparador de precios?
+        hr
+        .row.justify-content-md-center
+            .col-12.col-md-9
+                img.img-fluid.img-thumbnail.float-left.mr-3.mb-1(src=siteUrl('images/landing/post.jpg') style="width: 450px;")
+                p El comercio online en Perú no para de crecer año tras año. Como resultado ha incrementado la variedad y el número de productos y ofertas disponibles en internet. Si bien es un paso de avance en el desarrollo del comercio electrónico también aumenta su complejidad al momento de encontrar estos productos y una oferta deseada en términos de calidad y precio. Como consecuencia a esta problemática surgen los comparadores de precios.
+                p Un comparador de precio es una herramienta o servicio para ayudar al usuario a optimizar el tiempo de búsqueda del producto deseado. El comparador reúne las ofertas de los diferentes sitios que venden el producto y te muestra dichas ofertas de una forma ordenada. De esta manera el usuario no tiene que entrar en cada sitio comparando oferta por oferta. Sin duda alguna el usar los comparadores de precios le brinda al usuario un increíble ahorro; tanto de tiempo como dinero ya que en pocos minutos podrá encontrar la oferta deseada y al mejor precio.
+                p ComparandoAndo es una solución creada para comparar precios de telefonos celulares. Buscamos los precios de celulares en Peru y se lo mostramos ordenado por precio o popularidad. También puede definir parámetros de búsquedas personalizados para encontrar el telefono celular deseado. Evaluamos el teléfono celular calificandolo según sus especificaciones técnicas y dándole una puntuación. Así mismo los sitios de los que mostramos estas ofertas tendrán una calificación basándonos en algunos requisitos mínimos que tienen que cumplir como facilidad de varios métodos de pagos, buenas políticas de devolución y contactos de atención al usuario verificados. Somos una excelente solución si usted está buscando sitio por sitio algun telefono celular que desee comprar y aun no encuentra la oferta ideal. ¡Inténtelo aquí!
+
+
+        h2.h2(style="font-size: 1.4rem;").mt-4 De las mejores marcas de telefonos celulares
+            hr
+            .row.justify-content-md-center
+                a.col-12.col-sm-6.col-md-2.text-center.my-3(href=siteUrl('c/' + categorias.celular.slug + '?marca=SAMSUNG'))
+                    img.img-fluid(src=siteUrl('images/landing/samsung.jpg') style='max-height: 40px;' alt="marca samsung")
+
+                a.col-12.col-sm-6.col-md-2.text-center.my-3(href=siteUrl('c/' + categorias.celular.slug + '?marca=APPLE'))
+                    img.img-fluid(src=siteUrl('images/landing/iphone.jpg') style='max-height: 40px;' alt="marca apple")
+
+                a.col-12.col-sm-6.col-md-2.text-center.my-3(href=siteUrl('c/' + categorias.celular.slug + '?marca=LG'))
+                    img.img-fluid(src=siteUrl('images/landing/lg.png') style='max-height: 40px;' alt="marca lg")
+
+                a.col-12.col-sm-6.col-md-2.text-center.my-3(href=siteUrl('c/' + categorias.celular.slug + '?marca=HUAWEI'))
+                    img.img-fluid(src=siteUrl('images/landing/huawei.jpg') style='max-height: 40px;' alt="marca huawei")
+
+                a.col-12.col-sm-6.col-md-2.text-center.my-3(href=siteUrl('c/' + categorias.celular.slug + '?marca=MOTOROLA'))
+                    img.img-fluid(src=siteUrl('images/landing/motorola.jpg') style='max-height: 40px;' alt="marca motorola")
+
+
+block content_js
+    script(src=siteUrl('javascripts/landing_index.bundle.js'))

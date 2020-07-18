@@ -1,0 +1,85 @@
+.modal-dialog(role="document")
+    .modal-content
+        .modal-header
+            button.close(type="button" data-dismiss="modal" aria-label="Close")
+                span(aria-hidden="true") &times;
+            h3.modal-title Detalles de la Oferta
+        .modal-body
+            .row
+                .col-md-12
+                    a(href=oferta.url)
+                        h4= oferta.descripcion
+                    table.table.table-condensed.text-left
+                        tr
+                            th Precio
+                            td= PAIS_DEFECTO.moneda_simbolo + ' ' + oferta.precio.toFixed(2)
+                        tr
+                            th Precio Original
+                            td= oferta.precio_original.toFixed(2) + ' ' + oferta.currency_original
+                        tr
+                            th Producto Nuevo
+                            td
+                                if(oferta.nuevo == 1)
+                                    span SI
+                                else
+                                    span NO
+                        tr
+                            th Indexado
+                            td
+                                if(oferta.indexado == 1)
+                                    label.label.label-success SI
+                                else
+                                    label.label.label-warning NO
+                        tr
+                            th Estado
+                            td
+                                if(oferta.status == 1)
+                                    label.label.label-success Activo
+                                else
+                                    label.label.label-warning Inactivo
+                        tr
+                            th Actualizado
+                            td= date.format(oferta.updated, 'DD/MM/YYYY HH:mm:ss')
+                        tr
+                            th Creado
+                            td= date.format(oferta.created, 'DD/MM/YYYY HH:mm:ss')
+                        tr
+                            th
+                                br
+                                h4 SITIO
+                            td
+                                br
+                                img(src=siteUrl(oferta.sitio.logo) style="height: 30px;")
+                        tr
+                            th Nombre
+                            td
+                                a(href=oferta.sitio.url)= oferta.sitio.nombre
+                        tr
+                            th Rating
+                            td= oferta.sitio.rating + '%'
+                        tr
+                            th Pais
+                            td= oferta.sitio.pais.nombre + ' | ' + oferta.sitio.pais.moneda_codigo
+                        tr
+                            th Estado
+                            td
+                                if(oferta.sitio.status == 1)
+                                    label.label.label-success Activo
+                                else
+                                    label.label.label-warning Inactivo
+                        tr
+                            th(colspan="2")
+                                br
+                        tr
+                            th
+                                span(style="font-size: 1.6rem;") PRODUCTOS
+                            td
+                                span= productos.length
+                        each producto in productos
+                            tr
+                                td= producto.descripcion
+                                td= producto.ofertas.length + ' Ofertas'
+
+
+        .modal-footer.text-right
+            button.btn.btn-default(type="button" data-dismiss="modal") Cerrar

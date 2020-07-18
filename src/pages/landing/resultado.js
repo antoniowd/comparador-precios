@@ -1,0 +1,1 @@
+import '../categoria/index'

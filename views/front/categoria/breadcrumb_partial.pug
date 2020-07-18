@@ -1,0 +1,7 @@
+nav(aria-label="Mapa del sitio")
+    ol.breadcrumb.bg-white
+        li.breadcrumb-item
+            a(href=siteUrl())
+                i.fa.fa-home
+        li.breadcrumb-item(aria-current=categoria.seccion)= categoria.seccion
+        li.breadcrumb-item.active(aria-current=categoria.nombre)= categoria.nombre

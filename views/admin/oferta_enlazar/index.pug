@@ -1,0 +1,63 @@
+extend ../layout
+
+block active_menu
+    - var menu = {category: 'oferta', option: 'oferta_enlazar'}
+
+block content_header
+    h1 Enlazar Ofertas
+    ol.breadcrumb
+        li
+            a(href=siteUrl('ofertas_enlazar')) Ofertas
+        li.active Enlazar
+
+block content
+
+    .box.box-primary
+        .box-body
+            .row
+                .col-md-6
+                    h3 Telefonos
+                    .row
+                        .col-xs-12
+                            label Selecciona el telefono
+                            select.form-control(id="telefono_id")
+                                option
+                                each telefono in telefonos
+                                    option(value=telefono._id)= telefono.marca + ' ' + telefono.modelo
+                            div#telefono_descripcion
+                .col-md-6
+                    h3 Ofertas Activas
+                    table.table
+                        thead
+                            tr
+                                th Descripción
+                                th Precio
+                                th(style="width: 20px;" data-priority="2") Acciones
+                        tbody
+                            each oferta in ofertas
+                                tr
+                                    td
+                                        a(href=oferta.url target="_BLANK")= oferta.descripcion
+                                        br
+                                        strong= oferta.sitio.nombre
+                                    td= parseFloat(oferta.precio).toFixed(2) + ' ' + oferta.currency
+                                    td.action-table
+                                        a.btn.btn-primary.btn-sm.btn-action-table(href=siteUrl('admin/ofertas/editar/' + oferta._id))
+                                            span.fa.fa-chain
+
+                                        button.btn.btn-default.btn-sm.btn-action-table(onclick="detalles('" + oferta._id + "')",
+                                        | type="button")
+                                            span.glyphicon.glyphicon-list
+
+
+    .modal.fade(id="detalles_modal" tabindex='1' role='dialog')
+
+    .modal.fade(id="enlace_modal" tabindex='1' role='dialog')
+
+block content_css
+    style
+        include index.css
+
+block content_js
+    script
+        include index.js

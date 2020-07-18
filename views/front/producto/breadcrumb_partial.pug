@@ -1,0 +1,9 @@
+nav(aria-label="Mapa del sitio")
+    ol.breadcrumb.bg-white
+        li.breadcrumb-item
+            a(href=siteUrl())
+                i.fa.fa-home
+        li.breadcrumb-item(aria-current=producto.categoria.seccion)= producto.categoria.seccion
+        li.breadcrumb-item(aria-current=producto.categoria.nombre)
+            a(href=siteUrl('c/' + producto.categoria.slug))= producto.categoria.nombre
+        li.breadcrumb-item.active(aria-current=producto.categoria.nombre)= producto.descripcion

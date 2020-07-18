@@ -1,0 +1,122 @@
+extend ../layout
+
+block active_menu
+    - var menu = {category: 'oferta', option: 'oferta_ofertas'}
+
+block content_header
+    h1 #{title}
+    ol.breadcrumb
+        li
+            a(href=siteUrl('admin/ofertas')) Ofertas
+        li
+            a(href=siteUrl('admin/ofertas')) Adminstrar
+        li.active #{title}
+
+block content
+    .row
+        .col-md-offset-3.col-md-6.col-sm-offset-2.col-sm-8
+            .box.box-success
+                form.form(action=(siteUrl('admin/ofertas/guardar/') + (oferta && oferta._id != undefined ? oferta._id : '')),
+                method="POST")
+                    .box-body
+                        .form-group
+                            input(type="hidden" id="sitio" name="sitio" value=sitio._id)
+                            strong Sitio
+                            div.text-center
+                                img(src=siteUrl(sitio.logo))
+
+                        .form-group
+                            label(for="categoria") Categoria *
+                            select.form-control(id="categoria" name="categoria" required)
+                                each categoria in categorias
+                                    option(value=categoria.slug selected=(oferta && oferta.categoria_ref == categoria.slug ? true : false))= categoria.nombre
+
+                        .form-group
+                            label(for="descripcion") Descripción de la Oferta *
+                            input.form-control(id="descripcion" name="descripcion" required,
+                            value=(oferta ? oferta.descripcion : '') placeholder="Escriba la descripción de la oferta")
+
+                        .form-group
+                            label(for="url") Url Redireccion (Para mostrar al usuario) *
+                            input.form-control(type="url" id="url" name="url" required,
+                            value=(oferta ? oferta.url : '') placeholder="Agregue la url de la oferta")
+
+                        .form-group
+                            label(for="precio_original") Precio *
+                            .row
+                                .col-md-4
+                                    select.form-control(id="currency_original" name="currency_original" required)
+                                        each pais in paises
+                                            if(oferta)
+                                                option(value=pais.moneda_codigo,
+                                                selected=(oferta && oferta.currency_original == pais.moneda_codigo ? true : false))= pais.moneda_simbolo
+                                            else
+                                                option(value=pais.moneda_codigo,
+                                                selected=(sitio.pais.moneda_codigo == pais.moneda_codigo ? true : false))= pais.moneda_simbolo
+                                .col-md-8
+                                    input.form-control( type="number" id="precio_original" min="0" step="0.001" name="precio_original" required,
+                                    value = (oferta ? oferta.precio_original : '') placeholder="Precio de la Oferta")
+
+                        .form-group
+                            label(for="imagen") Costo Envio
+                            input.form-control(type="number" id="costo_envio_original" name="costo_envio_original",
+                            value=(oferta ? oferta.costo_envio_original : '') min="0" step="0.001" required)
+
+                        .form-group
+                            label(for="nuevo") Producto Nuevo *
+                            select.form-control(id="nuevo" name="nuevo")
+                                option(value="1" selected=(oferta && oferta.status == 1 ? true : false)) SI
+                                option(value="0" selected=(oferta && oferta.status == 0 ? true : false)) NO
+
+                        .form-group
+                            label(for="status") Estado *
+                            select.form-control(id="status" name="status")
+                                option(value="1" selected=(oferta && oferta.status == 1 ? true : false)) Activo
+                                option(value="0" selected=(oferta && oferta.status == 0 ? true : false)) Inactivo
+
+                        .form-group
+                            label(for="imagen") Url Imagen Referencial
+                            input.form-control(type="url" id="imagen" name="imagen",
+                            value=(oferta ? oferta.imagen : '') placeholder="Url referencial de la imagen de la oferta")
+
+
+                        h4 Enlazar Oferta
+                        .form-group
+                            label(for="producto_search") Seleccione el producto
+                            input.form-control(id="producto_search" placeholder="Busque el producto a enlazar",
+                            autocomplete="off")
+                            div#producto_content
+                                if(productos && productos.length > 0)
+                                    div(style="height: 200px; overflow-y: auto;")
+                                        table.table.table-condensed
+                                            tr
+                                                th
+                                                th Marca
+                                                th Modelo
+                                            each producto in productos
+                                                tr
+                                                    td
+                                                        input(type="checkbox" checked name="productos_id" value=producto._id)
+                                                    td= producto.marca
+                                                    td= producto.modelo
+                                    br
+                                    strong= productos.length + ' productos encontrados'
+
+
+                        hr
+                        .form-group.row
+                            .col-xs-6.text-center
+                                input.btn.btn-success(type="submit" value="Guardar")
+                            .col-xs-6.text-center
+                                a.btn.btn-danger(href=siteUrl('admin/ofertas')) Cancelar
+
+    .modal.fade(id="producto_modal" tabindex='1' role='dialog')
+
+block content_css
+    link(href=siteUrl("bower_components/selectize/dist/css/selectize.css") rel='stylesheet' type='text/css')
+    link(href=siteUrl("bower_components/selectize/dist/css/selectize.default.css") rel='stylesheet' type='text/css')
+
+block content_js
+    script(src=siteUrl("bower_components/selectize/dist/js/standalone/selectize.min.js") type='text/javascript')
+    script
+        include form.js

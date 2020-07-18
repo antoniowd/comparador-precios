@@ -1,0 +1,45 @@
+doctype html
+html(lang="es")
+    head
+        title= title
+
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+        meta(name="description",
+            content=(meta_descripcion ? meta_descripcion : ''))
+
+        link(href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet')
+        link(href=siteUrl('bower_components/Font-Awesome/web-fonts-with-css/css/fontawesome-all.min.css') rel='stylesheet')
+        link(href=siteUrl('stylesheets/style.css') rel='stylesheet')
+    body
+        input(type='hidden' id='site_url' value=siteUrl())
+        nav.navbar.justify-content-center.p-0
+            a.navbar-brand.text-primary(href=siteUrl())
+                h3.h4.p-0.m-0.font-weight-bold.text-logo
+                    span Comparando
+                    span.text-warning(style='font-size: 1.8rem;') A
+                    span ndo
+        header.p-2.text-center.es-gradient
+            h1.text-white.h1.pb-0(style="font-size: 0.9rem;") Encuentre las mejores ofertas con nuestro comparador de precios de celulares
+            form.form-inline.mr-auto.ml-auto.search-form(id="form-search" action=siteUrl('resultado') autocomplete="off")
+                .input-group.w-100
+                    input.form-control(type="search", placeholder="Buscar..." id="search" name="q",
+                    value=(query && query.q ? query.q : ''))
+                    .input-group-append(id="search-icon")
+                        .input-group-text(style='font-size: 1.1rem;')
+                            i.fa.fa-search
+
+
+
+        block content
+
+        footer.text-dark.bg-light.mt-5
+
+            h6.text-center.text-dark
+                small
+                    b ComparandoAndo
+                div(style="font-size: 0.7rem;") Copyright 2018 ComparandoAndo - Todos los derechos reservados
+
+
+        block content_js
